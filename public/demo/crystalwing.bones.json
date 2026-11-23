@@ -1,0 +1,1040 @@
+{
+ "tool": "Procemotion",
+ "kind": "bone-map",
+ "version": 1,
+ "head": "Bip001_Head_049",
+ "headManual": false,
+ "pelvis": "Bip001_Spine_06",
+ "pelvisManual": false,
+ "style": "walk",
+ "styleManual": false,
+ "limbs": [
+  {
+   "type": "leg",
+   "side": "R",
+   "sideManual": true,
+   "bones": [
+    "Bip001_R_Thigh_017",
+    "Bip001_R_Calf_018",
+    "Bip001_R_HorseLink_019",
+    "Bip001_R_Foot_020"
+   ],
+   "details": [
+    "Bip001_R_Toe0_021",
+    "Bip001_R_Toe01_022",
+    "Bip001_R_Toe1_023",
+    "Bip001_R_Toe11_024",
+    "Bip001_R_Toe2_025",
+    "Bip001_R_Toe21_026"
+   ],
+   "dyn": {
+    "on": false,
+    "stiffness": 0.5,
+    "damping": 0.5,
+    "gravity": 0,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "leg",
+   "side": "L",
+   "sideManual": true,
+   "bones": [
+    "Bip001_L_Thigh_07",
+    "Bip001_L_Calf_08",
+    "Bip001_L_HorseLink_09",
+    "Bip001_L_Foot_010"
+   ],
+   "details": [
+    "Bip001_L_Toe0_011",
+    "Bip001_L_Toe01_012",
+    "Bip001_L_Toe1_013",
+    "Bip001_L_Toe11_014",
+    "Bip001_L_Toe2_015",
+    "Bip001_L_Toe21_016"
+   ],
+   "dyn": {
+    "on": false,
+    "stiffness": 0.5,
+    "damping": 0.5,
+    "gravity": 0,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "arm",
+   "side": "L",
+   "sideManual": true,
+   "bones": [
+    "Bip001_L_Forearm_032",
+    "Bip001_L_Hand_033"
+   ],
+   "details": [
+    "Bip001_L_Finger0_034",
+    "Bip001_L_Finger01_035",
+    "Bip001_L_Finger1_036",
+    "Bip001_L_Finger11_037",
+    "Bip001_L_Finger2_038",
+    "Bip001_L_Finger21_039",
+    "Bone032_040",
+    "Bone033_041",
+    "Bone034_042"
+   ],
+   "dyn": {
+    "on": false,
+    "stiffness": 0.5,
+    "damping": 0.5,
+    "gravity": 0,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "arm",
+   "side": "R",
+   "sideManual": true,
+   "bones": [
+    "Bip001_R_UpperArm_0107"
+   ],
+   "details": [
+    "Bip001_R_Forearm_0108",
+    "Bip001_R_Hand_0109",
+    "Bip001_R_Finger0_0110",
+    "Bip001_R_Finger01_0111",
+    "Bip001_R_Finger1_0112",
+    "Bip001_R_Finger11_0113",
+    "Bip001_R_Finger2_0114",
+    "Bip001_R_Finger21_0115",
+    "Bone032(mirrored)_0116",
+    "Bone033(mirrored)_0117",
+    "Bone034(mirrored)_0118"
+   ],
+   "dyn": {
+    "on": false,
+    "stiffness": 0.5,
+    "damping": 0.5,
+    "gravity": 0,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "wing",
+   "side": "L",
+   "sideManual": true,
+   "bones": [
+    "Bone014_0136"
+   ],
+   "details": [
+    "Bone015_0138",
+    "Bone016_0139",
+    "Bone044_0141",
+    "Bone018_0142",
+    "Bone019_0143",
+    "Bone020_0144",
+    "Bone021_0145",
+    "Bone042_0147",
+    "Bone041_0148",
+    "Bone023_0149",
+    "Bone024_0150",
+    "Bone025_01",
+    "Bone026_02",
+    "Bone043_0151",
+    "Bone028_0152",
+    "Bone029_0153",
+    "Bone030_0154",
+    "Bone101_0156"
+   ],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.8,
+    "damping": 0.6,
+    "gravity": 0,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "wing",
+   "side": "R",
+   "sideManual": true,
+   "bones": [
+    "Bone015(mirrored)_0158"
+   ],
+   "details": [
+    "Bone016(mirrored)_0159",
+    "Bone044(mirrored)_0161",
+    "Bone018(mirrored)_0162",
+    "Bone019(mirrored)_0163",
+    "Bone020(mirrored)_0164",
+    "Bone021(mirrored)_0165",
+    "Bone042(mirrored)_0167",
+    "Bone041(mirrored)_0168",
+    "Bone023(mirrored)_0169",
+    "Bone024(mirrored)_0170",
+    "Bone025(mirrored)_0171",
+    "Bone026(mirrored)_0172",
+    "Bone043(mirrored)_0174",
+    "Bone028(mirrored)_0155",
+    "Bone029(mirrored)_0176",
+    "Bone030(mirrored)_0177"
+   ],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.8,
+    "damping": 0.6,
+    "gravity": 0,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "tail",
+   "side": "C",
+   "sideManual": true,
+   "bones": [
+    "Bone001_0189",
+    "Bone002_0190",
+    "Bone003_0191",
+    "Bone004_0192",
+    "Bone005_0193",
+    "Bone006_0194",
+    "Bone007_0175",
+    "Bone008_0195",
+    "Bone009_0196",
+    "Bone010_0197"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.45,
+    "gravity": 0.1,
+    "waveAmp": 10,
+    "waveFreq": 0.7,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "C",
+   "sideManual": false,
+   "bones": [
+    "Bone096_0183",
+    "Bone096_0183_0"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "C",
+   "sideManual": false,
+   "bones": [
+    "Bone094_0181",
+    "Bone094_0181_0"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "C",
+   "sideManual": false,
+   "bones": [
+    "Bone098_0185",
+    "Bone098_0185_0"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "R",
+   "sideManual": false,
+   "bones": [
+    "Bone036_0180"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "C",
+   "sideManual": false,
+   "bones": [
+    "Bone100_0187",
+    "Bone100_0187_0"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": true,
+    "autoGround": true
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "R",
+   "sideManual": false,
+   "bones": [
+    "Bone013_0120"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "R",
+   "sideManual": false,
+   "bones": [
+    "Bone066_081"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "R",
+   "sideManual": false,
+   "bones": [
+    "Bone072_085"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "R",
+   "sideManual": false,
+   "bones": [
+    "Bone076_087"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "R",
+   "sideManual": false,
+   "bones": [
+    "Bone082_094"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "R",
+   "sideManual": false,
+   "bones": [
+    "Bone081_093"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "R",
+   "sideManual": false,
+   "bones": [
+    "Bone045_050"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "R",
+   "sideManual": false,
+   "bones": [
+    "Bone080_092"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "R",
+   "sideManual": false,
+   "bones": [
+    "Bone046_051",
+    "Bone047_052",
+    "Bone048_053",
+    "Bone049_054",
+    "Bone050_055",
+    "Bone051_056",
+    "Bone052_057"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "R",
+   "sideManual": false,
+   "bones": [
+    "Bone079_091"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "C",
+   "sideManual": false,
+   "bones": [
+    "Bone086_099"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "R",
+   "sideManual": false,
+   "bones": [
+    "Bone068_083"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "C",
+   "sideManual": false,
+   "bones": [
+    "Bone085_098"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "R",
+   "sideManual": false,
+   "bones": [
+    "Bone083_095"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "R",
+   "sideManual": false,
+   "bones": [
+    "Bone078_090"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "L",
+   "sideManual": false,
+   "bones": [
+    "Bone087_0100"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "C",
+   "sideManual": false,
+   "bones": [
+    "Bone084_097"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "R",
+   "sideManual": false,
+   "bones": [
+    "Bone077_089"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "R",
+   "sideManual": false,
+   "bones": [
+    "Bone093_096"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "L",
+   "sideManual": false,
+   "bones": [
+    "Bone088_0101"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "R",
+   "sideManual": false,
+   "bones": [
+    "Bone068(mirrored)_084"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "L",
+   "sideManual": false,
+   "bones": [
+    "Bone089_0102"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "R",
+   "sideManual": false,
+   "bones": [
+    "Bone066(mirrored)_082"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "R",
+   "sideManual": false,
+   "bones": [
+    "Bone072(mirrored)_086"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "R",
+   "sideManual": false,
+   "bones": [
+    "Bone076(mirrored)_088"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "R",
+   "sideManual": false,
+   "bones": [
+    "Bone096(mirrored)_0184",
+    "Bone096(mirrored)_0184_0"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "R",
+   "sideManual": false,
+   "bones": [
+    "Bone094(mirrored)_0182",
+    "Bone094(mirrored)_0182_0"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "L",
+   "sideManual": false,
+   "bones": [
+    "Bone090_0103"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "R",
+   "sideManual": false,
+   "bones": [
+    "Bone098(mirrored)_0186",
+    "Bone098(mirrored)_0186_0"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "L",
+   "sideManual": false,
+   "bones": [
+    "Bone091_0104"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "C",
+   "sideManual": false,
+   "bones": [
+    "Bone092_0105"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "appendage",
+   "side": "R",
+   "sideManual": false,
+   "bones": [
+    "Bone100(mirrored)_0188",
+    "Bone100(mirrored)_0188_0"
+   ],
+   "details": [],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.35,
+    "damping": 0.4,
+    "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  }
+ ]
+}

@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Procemotion</title>
+  <meta name="description" content="Find a creature's limbs, add bones to ears and tentacles, and give it procedural, terrain-aware animation for Unreal Engine." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='4' fill='%232c2c2e'/%3E%3Cpath d='M4 12 L7 7 L11 9 L12 4' stroke='%2330d158' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='7' cy='7' r='1.3' fill='%230a84ff'/%3E%3Ccircle cx='11' cy='9' r='1.3' fill='%230a84ff'/%3E%3C/svg%3E" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="../" title="Procemotion home page"><span class="logo"></span>Procemotion</a>
+    <button class="btn" id="openBtn">
+      <svg viewBox="0 0 16 16"><path d="M2 4.5h4l1.5 1.5H14v6.5H2z"/></svg>Open model…
+    </button>
+    <select id="demoSel" class="demosel" title="Free sample creatures (CC BY 4.0, from Fab)">
+      <option value="">Try a sample…</option>
+    </select>
+    <input type="file" id="fileInput" multiple hidden accept=".glb,.gltf,.bin,.fbx,.obj,.png,.jpg,.jpeg,.webp,.ktx2" />
+    <span class="hint" id="modelHint">GLB, GLTF, FBX or OBJ. Files stay on this computer.</span>
+    <span class="spacer"></span>
+    <div class="seg" id="modeSeg" role="tablist" aria-label="Mode">
+      <button data-mode="rig" role="tab">Rig</button>
+      <button data-mode="anim" class="on" role="tab">Animate</button>
+    </div>
+    <button class="btn primary" id="exportTop" disabled>Export for Unreal</button>
+  </header>
+
+  <main>
+    <aside class="sidebar" id="sidebar">
+      <details open id="secModel">
+        <summary>Model</summary>
+        <div class="sec">
+          <div class="info" id="modelInfo">No model loaded.</div>
+          <div class="row"><span>Reference pose</span><select id="refPose"></select></div>
+          <div class="row"><span>Faces</span>
+            <div class="seg" id="facingSeg">
+              <button data-f="+Z" class="on">+Z</button><button data-f="-Z">−Z</button><button data-f="+X">+X</button><button data-f="-X">−X</button>
+            </div>
+          </div>
+          <p class="note">Limbs are found in the reference pose. Pick a standing clip if the bind pose is unusual.</p>
+          <button class="btn wide" id="redetect" disabled>Detect limbs again</button>
+        </div>
+      </details>
+
+      <details open id="secLimbs">
+        <summary>Limbs <span class="badge" id="limbCount">0</span></summary>
+        <div class="sec">
+          <div id="noBones" hidden>
+            <p class="note">This model has no skeleton. Pick a body plan, drag the joints into place in the <b>Rig</b> view, then bind.</p>
+            <div class="chips" id="templateChips"></div>
+            <div class="btnrow"><button class="btn accent" id="bindTemplate" disabled>Bind skeleton</button><button class="btn" id="cancelTemplate" disabled>Cancel</button></div>
+          </div>
+          <div class="row" id="styleRow"><span>Moves by</span>
+            <div class="seg" id="styleSeg">
+              <button data-s="walk">Walking</button><button data-s="slither">Slithering</button><button data-s="hover">Floating</button>
+            </div>
+          </div>
+          <div class="list limbs" id="limbList"></div>
+          <p class="note">Click a limb to see it. Change its type if the guess is wrong; legs drive the footsteps, ears, tails and tentacles get springs.</p>
+          <div class="sub">Collision volume</div>
+          <label class="check"><input type="checkbox" id="p_collision_on" /> Body and parts stay out of the ground</label>
+          <div class="row"><span>Collision size</span><input type="range" id="p_collision_scale" min="0.3" max="1.6" step="0.01" /><output></output></div>
+          <p class="note" id="capInfo">—</p>
+        </div>
+      </details>
+
+      <details id="secAdd">
+        <summary>Add bones</summary>
+        <div class="sec">
+          <p class="note">Give bones to parts that have none, such as ears, tentacles, hair or a tail. This works on rigged models too: only the new part is re-weighted.</p>
+          <div class="row"><span>Part</span>
+            <select id="addType">
+              <option value="ear">Ear</option><option value="tentacle">Tentacle</option><option value="tail">Tail</option>
+              <option value="appendage">Hair / antenna</option><option value="wing">Wing</option><option value="leg">Leg</option><option value="arm">Arm</option>
+            </select>
+          </div>
+          <div class="row"><span>Bones</span><input type="range" id="addCount" min="1" max="12" value="3" /><output id="addCountOut">3</output></div>
+          <div class="row"><span>Attach to</span><select id="addParent"><option value="">Nearest bone</option></select></div>
+          <div class="row"><span>Weight blend</span><input type="range" id="addFalloff" min="0.15" max="1.5" step="0.05" value="0.6" /><output id="addFalloffOut">0.6</output></div>
+          <label class="check"><input type="checkbox" id="addMirror" checked /> Also add the mirrored part on the other side</label>
+          <div class="btnrow">
+            <button class="btn accent" id="placeBtn" disabled>Place on model</button>
+            <button class="btn" id="findBtn" disabled>Find unrigged parts</button>
+          </div>
+          <div id="placePanel" class="callout" hidden>
+            <p id="placeMsg">Click the base of the part, then along it to its tip.</p>
+            <div class="btnrow"><button class="btn accent" id="placeDone" disabled>Create bones</button><button class="btn" id="placeCancel">Cancel</button></div>
+          </div>
+          <div class="list" id="suggestList" hidden></div>
+          <div class="sub">Smoother bends</div>
+          <p class="note">Add bones between the existing ones of a chain, so a serpent body, tail or tentacle bends more smoothly. The model's own clips keep playing as before.</p>
+          <div class="row"><span>Chain</span><select id="subChain"></select></div>
+          <div class="row"><span>Split each bone in</span>
+            <div class="seg" id="subParts"><button data-n="2" class="on">2</button><button data-n="3">3</button><button data-n="4">4</button></div>
+          </div>
+          <button class="btn accent wide" id="subBtn" disabled>Add bones in between</button>
+          <div class="sub">Added <span class="badge" id="addedCount">0</span></div>
+          <div class="list" id="addedList"></div>
+          <button class="btn wide" id="undoAdd" disabled>Undo last added bones</button>
+        </div>
+      </details>
+
+      <details open id="secWalk">
+        <summary>Movement</summary>
+        <div class="sec" id="walkSec">
+          <div class="row"><span>Speed</span><input type="range" id="p_movement_speed" min="0" max="1" step="0.01" /><output></output></div>
+          <div id="gaitBox">
+            <div class="sub">Gait</div>
+            <div class="row"><span>When running</span>
+              <div class="seg" id="runStyle"><button data-r="gallop" class="on">Gallop</button><button data-r="alternate">Keep the walk pattern</button></div>
+            </div>
+            <label class="check" id="allFoursRow"><input type="checkbox" id="p_movement_allFours" /> Gallop on all fours (the arms become front legs)</label>
+            <div class="row"><span>Back flex (run)</span><input type="range" id="p_pelvis_flex" min="0" max="40" step="0.5" /><output></output></div>
+            <div class="row"><span>Rocking (run)</span><input type="range" id="p_pelvis_rock" min="0" max="25" step="0.5" /><output></output></div>
+            <div class="row"><span>Body hump (run)</span><input type="range" id="p_pelvis_hump" min="0" max="0.25" step="0.005" /><output></output></div>
+            <p class="note">Gallop: from about half speed the legs of each pair move almost together and the front and hind pairs alternate, with a moment in the air and the back bending up and down (crocodiles, dogs). A creature with two legs bounds with both. Body hump is the wave that runs back along a body lying on the ground (seals).</p>
+            <div class="sub">Walk pattern</div>
+            <div class="chips" id="gaitChips"></div>
+            <div id="footSets" class="footsets"></div>
+            <div class="sub">Steps</div>
+            <div class="row"><span>Step height</span><input type="range" id="p_stepping_stepHeight" min="0" max="0.8" step="0.01" /><output></output></div>
+            <div class="row"><span>Time in air</span><input type="range" id="p_stepping_air" min="0.1" max="0.9" step="0.01" /><output></output></div>
+            <div class="row"><span>Extra air at run</span><input type="range" id="p_stepping_airExt" min="0" max="0.6" step="0.01" /><output></output></div>
+            <div class="row"><span>Step rate walk</span><input type="range" id="p_movement_phaseMin" min="0.3" max="4" step="0.05" /><output></output></div>
+            <div class="row"><span>Step rate run</span><input type="range" id="p_movement_phaseMax" min="0.5" max="6" step="0.05" /><output></output></div>
+            <div class="row"><span>Smallest step</span><input type="range" id="p_movement_minStep" min="0" max="0.5" step="0.01" /><output></output></div>
+            <label class="check"><input type="checkbox" id="p_stepping_groundCollision" /> Feet follow the ground</label>
+            <div class="row"><span>Max climb</span><input type="range" id="p_stepping_maxCollision" min="0" max="1.5" step="0.01" /><output></output></div>
+            <div class="row"><span>Foot size</span><input type="range" id="p_stepping_footRadius" min="0" max="0.3" step="0.005" /><output></output></div>
+            <div class="row"><span>Feet to slope</span><input type="range" id="p_stepping_footPitch" min="0" max="1" step="0.01" /><output></output></div>
+            <div class="sub">Body</div>
+            <div class="row"><span>Bob</span><input type="range" id="p_pelvis_bob" min="0" max="0.3" step="0.005" /><output></output></div>
+            <div class="row"><span>Body to slope</span><input type="range" id="p_pelvis_pitch" min="0" max="1.2" step="0.01" /><output></output></div>
+            <div class="row"><span>Body roll</span><input type="range" id="p_pelvis_roll" min="0" max="1.2" step="0.01" /><output></output></div>
+            <div class="row"><span>Lean (speed up)</span><input type="range" id="p_pelvis_lean" min="0" max="30" step="0.5" /><output></output></div>
+            <div class="row"><span>Bank in turns</span><input type="range" id="p_pelvis_bank" min="0" max="30" step="0.5" /><output></output></div>
+          </div>
+          <div id="slitherBox" hidden>
+            <div class="row"><span>Wave width</span><input type="range" id="p_slither_amp" min="0" max="0.3" step="0.005" /><output></output></div>
+            <div class="row"><span>Wave length</span><input type="range" id="p_slither_wavelength" min="0.1" max="1.5" step="0.01" /><output></output></div>
+            <div class="row"><span>Idle wave</span><input type="range" id="p_slither_idleAmp" min="0" max="0.15" step="0.005" /><output></output></div>
+            <div class="row"><span>Head height</span><input type="range" id="p_slither_headRaise" min="0" max="1.5" step="0.01" /><output></output></div>
+            <div class="row"><span>Neck length</span><input type="range" id="p_slither_neck" min="0.02" max="0.7" step="0.01" /><output></output></div>
+            <div class="row"><span>Air wave</span><input type="range" id="p_slither_flyAmp" min="0" max="0.25" step="0.005" /><output></output></div>
+            <p class="note">Measured against the body length. The body follows the path its head took; in the air (Flight) it floats with an up-down wave, like a Chinese dragon. Set ears or fins to “Wing” to flap them.</p>
+          </div>
+          <div id="hoverBox" hidden>
+            <div class="row"><span>Float height</span><input type="range" id="p_hover_height" min="0" max="1" step="0.01" /><output></output></div>
+            <div class="row"><span>Float bob</span><input type="range" id="p_hover_bob" min="0" max="0.2" step="0.005" /><output></output></div>
+            <div class="row"><span>Tilt</span><input type="range" id="p_hover_tilt" min="0" max="40" step="0.5" /><output></output></div>
+          </div>
+          <div class="sub">Head</div>
+          <div class="row"><span>Keep head level</span><input type="range" id="p_head_stabilize" min="0" max="1" step="0.01" /><output></output></div>
+          <div class="row"><span>Look into turns</span><input type="range" id="p_head_lookAhead" min="0" max="2" step="0.01" /><output></output></div>
+          <div class="row"><span>Top speed</span><input type="range" id="p_movement_maxSpeed" min="0.3" max="8" step="0.05" /><output></output></div>
+          <p class="note">Lengths are measured against the creature (leg length or height), so settings carry over between models.</p>
+        </div>
+      </details>
+
+      <details id="secFly" hidden>
+        <summary>Flight</summary>
+        <div class="sec">
+          <label class="check strong"><input type="checkbox" id="p_flight_on" /> Fly</label>
+          <div class="seg" id="flyMode"><button data-m="flapglide" class="on">Flap + glide</button><button data-m="flap">Flap</button><button data-m="glide">Glide</button><button data-m="hover">Hover</button></div>
+          <div class="row" id="earFlyRow"><span>Ears in flight</span>
+            <div class="seg" id="earFly"><button data-e="auto" class="on" title="Flap only if the creature has no wings">Auto</button><button data-e="spring">Springy</button><button data-e="flap">Flap</button><button data-e="spread">Spread</button></div>
+          </div>
+          <div class="row"><span>Altitude</span><input type="range" id="p_flight_altitude" min="0.2" max="4" step="0.05" /><output></output></div>
+          <div class="sub">Wingbeat</div>
+          <div class="row"><span>Flap angle</span><input type="range" id="p_flight_flapAmp" min="5" max="90" step="1" /><output></output></div>
+          <div class="row"><span>Beats per sec</span><input type="range" id="p_flight_flapFreq" min="0.3" max="8" step="0.05" /><output></output></div>
+          <div class="row"><span>Downstroke share</span><input type="range" id="p_flight_downstroke" min="0.35" max="0.75" step="0.01" /><output></output></div>
+          <div class="row"><span>Fold on upstroke</span><input type="range" id="p_flight_foldUp" min="0" max="1" step="0.01" /><output></output></div>
+          <div class="row"><span>Tip loop</span><input type="range" id="p_flight_sweep" min="0" max="35" step="0.5" /><output></output></div>
+          <div class="row"><span>Wing twist</span><input type="range" id="p_flight_twist" min="0" max="45" step="0.5" /><output></output></div>
+          <div class="row"><span>Tip delay</span><input type="range" id="p_flight_lag" min="0" max="1" step="0.01" /><output></output></div>
+          <div class="row"><span>Wing lift (V)</span><input type="range" id="p_flight_dihedral" min="-20" max="30" step="0.5" /><output></output></div>
+          <div class="row"><span>Body rise</span><input type="range" id="p_flight_bob" min="0" max="0.08" step="0.001" /><output></output></div>
+          <div class="sub">Flap + glide</div>
+          <div class="row"><span>Beats per burst</span><input type="range" id="p_flight_burst" min="1" max="10" step="1" /><output></output></div>
+          <div class="row"><span>Glide time (s)</span><input type="range" id="p_flight_glideTime" min="0.2" max="5" step="0.1" /><output></output></div>
+          <div class="row"><span>Tuck legs</span><input type="range" id="p_flight_tuck" min="0" max="1" step="0.01" /><output></output></div>
+          <p class="note">Based on bird flight: a longer downstroke, wings folding on the upstroke, the tip drawing a loop, the wing twisting, the body rising on each downstroke, bursts of beats between glides, and a flare when landing.</p>
+        </div>
+      </details>
+
+      <details id="secDyn">
+        <summary>Ears, tails &amp; tentacles</summary>
+        <div class="sec">
+          <div class="row"><span>Part</span><select id="dynLimb"></select></div>
+          <div id="dynBox">
+            <label class="check strong"><input type="checkbox" id="d_on" /> Springy</label>
+            <div class="row"><span>Stiffness</span><input type="range" id="d_stiffness" min="0" max="1" step="0.01" /><output></output></div>
+            <div class="row"><span>Damping</span><input type="range" id="d_damping" min="0" max="1" step="0.01" /><output></output></div>
+            <div class="row"><span>Gravity</span><input type="range" id="d_gravity" min="0" max="1" step="0.01" /><output></output></div>
+            <div class="row"><span>Wave</span><input type="range" id="d_waveAmp" min="0" max="45" step="0.5" /><output></output></div>
+            <div class="row"><span>Wave speed</span><input type="range" id="d_waveFreq" min="0.05" max="4" step="0.05" /><output></output></div>
+            <div class="row"><span>Wave spread</span><input type="range" id="d_waveShift" min="0" max="2" step="0.02" /><output></output></div>
+            <div class="row"><span>Wave direction</span>
+              <div class="seg" id="d_waveAxis"><button data-a="side">Side</button><button data-a="up">Up-down</button><button data-a="both">Both</button></div>
+            </div>
+            <div class="row"><span>Twitch</span><input type="range" id="d_twitch" min="0" max="1" step="0.01" /><output></output></div>
+            <label class="check"><input type="checkbox" id="d_collide" /> Collide with and lie on the ground</label>
+            <button class="btn wide" id="dynAll">Use these settings for every part of this type</button>
+          </div>
+          <p class="note" id="dynEmpty">No ears, tails, tentacles or hair found. Add bones to them in <b>Add bones</b>.</p>
+        </div>
+      </details>
+
+      <details open id="secActions">
+        <summary>Actions</summary>
+        <div class="sec">
+          <div id="actionGroups"></div>
+          <div class="row"><span>Strength</span><input type="range" id="a_intensity" min="0.2" max="2" step="0.05" value="1" /><output>1</output></div>
+          <div class="row"><span>Speed</span><input type="range" id="a_speed" min="0.3" max="2.5" step="0.05" value="1" /><output>1</output></div>
+          <div class="row"><span>Side / from</span>
+            <div class="seg" id="a_side"><button data-v="L" class="on">Left</button><button data-v="R">Right</button><button data-v="front">Front</button></div>
+          </div>
+          <button class="btn wide" id="stopAction">Stop action</button>
+        </div>
+      </details>
+
+      <details id="secBake">
+        <summary>Bake clips <span class="badge" id="bakedCount">0</span></summary>
+        <div class="sec">
+          <p class="note">Turns the procedural motion into ordinary in-place clips (flat ground, seamless loops). The live, terrain-aware version is rebuilt in Unreal by the exported script.</p>
+          <div class="chips" id="bakeChips"></div>
+          <div class="btnrow"><button class="btn accent" id="bakeBtn" disabled>Bake selected</button></div>
+          <div class="sub">Clips</div>
+          <div class="list" id="clipList"></div>
+        </div>
+      </details>
+
+      <details id="secExport">
+        <summary>Export</summary>
+        <div class="sec">
+          <div class="row"><span>Model file</span><div class="seg" id="modelFormat"><button data-f="glb">GLB</button><button data-f="fbx">FBX</button><button data-f="both" class="on">Both</button></div></div>
+          <div class="row"><span>UE import scale</span><input type="number" id="ueScale" value="1" step="0.01" min="0.0001" /></div>
+          <p class="note" id="ueSize">—</p>
+          <label class="check"><input type="checkbox" id="incOriginal" checked /> Include the model's own clips</label>
+          <label class="check"><input type="checkbox" id="rebindRef" /> Make the standing pose the skeleton's reference pose</label>
+          <p class="note">Needed for walking creatures: UE's Locomotor starts from the reference pose, and some models are bound lying down. It can shift blended areas slightly in the model's own clips, so it is off for creatures without legs.</p>
+          <div class="btnrow">
+            <button class="btn primary" id="exportAll" disabled>Download for Unreal</button>
+            <button class="btn" id="exportFolder" disabled>Save to folder…</button>
+          </div>
+          <p class="note">You get <b>name.glb</b> and/or <b>name.fbx</b> (mesh, skeleton with any added bones, clips; the FBX has the textures inside and one take per clip), <b>name.procemotion.json</b> and <b>name_Procemotion_UE.py</b>, which builds the Control Rig in UE 5.8 from either file. Shape keys (morph targets) are not exported.</p>
+        </div>
+      </details>
+    </aside>
+
+    <section class="stage">
+      <div class="pane">
+        <div class="panehead">
+          <div class="seg mini" id="driveSeg">
+            <button data-d="course" class="on" title="Walk a loop over rocks, a step, a ramp and stairs">Course</button>
+            <button data-d="drive" title="W A S D to move, Shift to run">Drive</button>
+            <button data-d="inplace" title="On the spot (how baked clips look)">In place</button>
+            <button data-d="stand">Stand</button>
+          </div>
+          <div class="seg mini" id="groundSeg"><button data-g="course" class="on">Obstacles</button><button data-g="flat">Flat</button></div>
+          <span class="spacer"></span>
+          <label class="mini"><input type="checkbox" id="showSkel" checked /> Skeleton</label>
+          <label class="mini"><input type="checkbox" id="showWeights" /> Weights</label>
+          <label class="mini"><input type="checkbox" id="showCollision" /> Collision</label>
+          <label class="mini"><input type="checkbox" id="follow" checked /> Follow</label>
+          <button class="btn small" id="pauseBtn">Pause</button>
+        </div>
+        <canvas id="view"></canvas>
+        <div class="empty" id="empty">
+          <div class="emptybox">
+            <h2>Drop a creature here</h2>
+            <p>GLB, GLTF, FBX or OBJ — with or without bones.</p>
+            <button class="btn primary" id="openBtn2">Open model…</button>
+            <p class="or">or try a free sample</p>
+            <div class="demochips" id="demoChips"></div>
+            <p class="credit">Samples from <a href="https://www.fab.com" target="_blank" rel="noopener">Fab</a>, by their authors, under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>. <a href="../#credits">Credits</a></p>
+          </div>
+        </div>
+        <div class="viewhint" id="viewHint"></div>
+        <div class="toast" id="toast" hidden></div>
+        <div class="selbox" id="selBox" hidden></div>
+      </div>
+    </section>
+
+    <aside class="rightpanel" id="classPanel" hidden>
+      <div class="rp-head">
+        <b>Bone classes</b>
+        <button class="btn small" id="clsUndo" title="Undo (Ctrl+Z)" disabled>Undo</button>
+      </div>
+      <p class="note">Pick a type, then drag a box over its joints in the view (hidden joints count too). <b>Shift</b> adds to the selected part, <b>Alt</b> takes joints out. Esc stops.</p>
+      <div class="row"><span>Select</span>
+        <div class="seg mini" id="clsPick"><button data-p="single" title="One joint per click">Single</button><button data-p="multi" class="on" title="Drag a box over many joints (a click still takes one)">Multi</button></div>
+      </div>
+      <div class="clsgrid" id="clsTypes"></div>
+      <button class="clsbtn wide" data-type="add" id="clsAdd" title="Add joints to a part that already exists (the part selected in the list, or the part they join onto)"><span class="dot" style="background:#0a84ff"></span>+ Add to existing class</button>
+      <div class="clsgrid two">
+        <button class="clsbtn" data-pick="head"><span class="dot" style="background:#e5e5ea"></span>Head</button>
+        <button class="clsbtn" data-pick="pelvis"><span class="dot" style="background:#e5e5ea"></span>Pelvis</button>
+      </div>
+      <div class="list" id="clsList"></div>
+      <div class="btnrow">
+        <button class="btn small" id="clsClear" title="Remove every part and start from scratch">Clear all</button>
+        <button class="btn small" id="clsAuto" title="Forget the saved classes and detect again">Auto-detect</button>
+      </div>
+      <div class="btnrow">
+        <button class="btn small" id="clsExport">Export JSON</button>
+        <button class="btn small" id="clsImport">Import JSON</button>
+        <input type="file" id="clsFile" accept=".json,application/json" hidden />
+      </div>
+      <p class="note" id="clsSaved">Saved in this browser for this model.</p>
+    </aside>
+  </main>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

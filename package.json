@@ -1,0 +1,19 @@
+{
+  "name": "procemotion",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Find the limbs of a 3D creature, add bones to ears and tentacles, and drive it with procedural, terrain-aware animation for Unreal Engine.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "^5.3.0",
+    "three": "^0.187.0"
+  },
+  "devDependencies": {
+    "vite": "^8.3.8"
+  }
+}

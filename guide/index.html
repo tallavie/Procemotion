@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Procemotion · How to use it</title>
+<meta name="description" content="How to use Procemotion: open a creature, check its limbs, fix them by hand, animate, bake clips and export to Unreal Engine.">
+<link rel="icon" href="/icon.svg">
+<link rel="stylesheet" href="/src/site.css">
+</head>
+<body>
+<header><div class="wrap">
+  <a class="brand" href="../"><span class="logo"></span><span>Procemotion</span></a>
+  <nav><a href="#open">Open</a><a href="#limbs">Limbs</a><a href="#classes">Fix by hand</a><a href="#animate">Animate</a><a href="#bake">Bake</a><a href="#export">Export</a></nav>
+  <a class="btn sm" href="../app/">Open the app</a>
+</div></header>
+
+<main class="wrap guide">
+  <div class="top">
+    <h1>How to use Procemotion</h1>
+    <p class="lead">Six steps from a model to a creature that walks, flies or slithers in your game. Every clip below was recorded from the app with the free sample creatures.</p>
+    <div class="steps"><a href="#open">1 · Open</a><a href="#limbs">2 · Limbs</a><a href="#classes">3 · Fix by hand</a><a href="#animate">4 · Animate</a><a href="#bake">5 · Bake</a><a href="#export">6 · Export</a></div>
+  </div>
+
+  <section class="step" id="open">
+    <h2><b>1</b>Open a creature</h2>
+    <p>Drop a <b>GLB, GLTF, FBX or OBJ</b> on the page or use <b>Open model…</b> (bring the texture files along with a GLTF or FBX). Nothing is uploaded: the file stays in your browser. No model at hand? Pick one of the four samples under <b>Try a sample…</b>, or on the empty screen.</p>
+    <ul>
+      <li>The model starts walking over a test course of rocks, steps, ramps and stairs at once.</li>
+      <li>A model without bones gets a choice of body plans (two legs, four legs, bird, snake, floating): drag the joints into the body and press <b>Bind skeleton</b>.</li>
+      <li>If the creature faces sideways or backwards, set <b>Faces</b>. If its first pose is odd (lying down, flying), pick a standing clip as the <b>Reference pose</b>.</li>
+    </ul>
+    <img class="film" src="/guide/open.gif" alt="Clicking the wolf sample on the empty screen: it loads and starts walking over the course" width="640" height="400" loading="lazy">
+  </section>
+
+  <section class="step" id="limbs">
+    <h2><b>2</b>Check the limbs it found</h2>
+    <p>Switch to <b>Rig</b>. The skeleton is drawn over the model in colours: <b>green</b> legs, <b>blue</b> arms, <b>purple</b> wings, <b>orange</b> tails, <b>red</b> ears, <b>tan</b> hair and antennae. The <b>Limbs</b> list on the left says what each part is; click a row to light it up, or a joint in the view to see which part it belongs to.</p>
+    <ul>
+      <li>A wrong guess? Change the type in the row's menu: the motion follows at once.</li>
+      <li>Ears, tails and tentacles without bones can get some under <b>Add bones</b>: click along the part, or let <b>Find unrigged parts</b> suggest them. <b>Smoother bends</b> adds joints to a stiff tail or snake.</li>
+    </ul>
+    <img class="film" src="/guide/limbs.gif" alt="The spider in the Rig view: clicking its legs in the list lights them up one by one" width="640" height="400" loading="lazy">
+  </section>
+
+  <section class="step" id="classes">
+    <h2><b>3</b>Fix it by hand when needed</h2>
+    <p>Some models are built in unusual ways. The <b>Bone classes</b> panel on the right of the Rig view lets you say what is what: pick a type, then drag a box over its joints (joints hidden behind the body count too). One box over both legs makes two legs; left and right come by themselves.</p>
+    <ul>
+      <li><b>Select: Single / Multi</b>: one joint per click, or a box.</li>
+      <li><b>+ Add to existing class</b> adds joints you missed to a part that is already there. <b>Shift</b> adds to the selected part, <b>Alt</b> or <b>Remove</b> takes joints out, <b>Ctrl+Z</b> undoes.</li>
+      <li><b>Head</b> and <b>Pelvis</b> are picked with one click. Every change is saved in your browser for that model; <b>Export JSON</b> takes it to another computer.</li>
+    </ul>
+    <p>The dragon sample was classified this way: its wings are fans of short bones that no rule could read.</p>
+    <img class="film" src="/guide/classes.gif" alt="The wolf in the Rig view: clearing its parts, then boxing its front legs, back legs, tail and ears in the Bone classes panel" width="640" height="400" loading="lazy">
+  </section>
+
+  <section class="step" id="animate">
+    <h2><b>4</b>Animate and tune</h2>
+    <p>Back in <b>Animate</b>, the creature moves around the course on its own. <b>Drive</b> lets you steer it with W A S D (Shift to run); <b>In place</b> shows it the way baked clips will look.</p>
+    <ul>
+      <li><b>Movement</b>: speed, stride, step height, how the body rocks and leans. From about half speed a creature with legs <b>gallops</b>; two legs and two arms drop onto all fours.</li>
+      <li><b>Flight</b> (for wings, or ears used as wings): flap, glide, flap-and-glide or hover; how hard and how fast the wings beat.</li>
+      <li><b>Springs</b>: how stiff, heavy and wavy each ear, tail or tentacle is. <b>Collision</b> keeps the body and tails out of the ground.</li>
+      <li><b>Actions</b> play on top of any gait: bite, charge, swipe, stomp, tail whip, roar, hit, faint, jump.</li>
+    </ul>
+    <img class="film" src="/guide/gallop.gif" alt="The wolf walking, then breaking into a gallop when the speed goes up" width="640" height="400" loading="lazy">
+    <div class="gifs" style="margin-top:22px">
+      <figure><img src="/guide/spider.gif" alt="The spider walking over rocks on eight legs" width="640" height="400" loading="lazy"><figcaption><b>Eight legs</b><span>Two groups of four take turns, each foot on the rock under it.</span></figcaption></figure>
+      <figure><img src="/guide/slither.gif" alt="The cobra slithering with its head raised" width="640" height="400" loading="lazy"><figcaption><b>Slither</b><span>The body follows its own path; the head stays up.</span></figcaption></figure>
+    </div>
+    <img class="film" src="/guide/flight.gif" alt="The dragon taking off and flying over the course" width="640" height="400" loading="lazy">
+  </section>
+
+  <section class="step" id="bake">
+    <h2><b>5</b>Bake clips</h2>
+    <p>Under <b>Bake</b>, tick the loops you want (walk, run, idle, slither, flight) and any actions, then press <b>Bake</b>. Each becomes an in-place clip on flat ground that loops seamlessly, listed under <b>Clips</b> where you can play it back. Baked clips work in any engine.</p>
+  </section>
+
+  <section class="step" id="export">
+    <h2><b>6</b>Export to Unreal Engine</h2>
+    <p>Press <b>Export for Unreal</b>. Pick the <b>Model file</b> (GLB, FBX or both) and set <b>UE import scale</b> so the size line shows the height you want. You get the model with its clips, a <b>.procemotion.json</b> with every setting, and a Python script.</p>
+    <ul>
+      <li>In Unreal Engine 5.8, enable the <b>Locomotor</b> (Experimental) and <b>Python Editor Script</b> plugins and import the model.</li>
+      <li>Select the skeletal mesh, then <b>Tools › Execute Python Script</b> and pick the exported script. It builds the Control Rig and <b>BP_name_Procemotion</b>.</li>
+      <li>Drop the actor into a level and press Play: it walks a circle and steps on whatever is below it. <b>BP_name_Procemotion_Run</b> gallops.</li>
+      <li>For your own character: in its Anim Blueprint, put a <b>Control Rig</b> node with the rig after your pose, and move the character with CharacterMovement.</li>
+    </ul>
+    <p>Keep <b>Make the standing pose the skeleton's reference pose</b> on for walking creatures: Unreal's Locomotor starts from that pose.</p>
+  </section>
+</main>
+
+<footer><div class="wrap">
+  <span>Sample creatures by ManNeko, Bestgameassets, DaVe inc. and StudioGreen, from Fab, under CC BY 4.0. <a href="../#credits">Credits</a></span>
+  <span>Procemotion · <a href="https://github.com/tallavie/Procemotion">github.com/tallavie/Procemotion</a> · GPL-3.0</span>
+</div></footer>
+</body>
+</html>
