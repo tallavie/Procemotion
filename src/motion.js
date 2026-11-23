@@ -807,6 +807,12 @@ export class Motion {
     const K = this.snake;
     if (!K) return;
     const b = this.body;
+    // on the course the body starts lying along the path (the head leads along it, not along its tangent)
+    if (this.mode === 'course') {
+      K.trail = [];
+      for (let d = 0; d <= K.L * 1.3; d += 0.02 * K.L) K.trail.push(this.terrain.pathPoint(b.s + K.lead - d, V()));
+      return;
+    }
     const f = V().set(Math.sin(b.yaw), 0, Math.cos(b.yaw));
     const head = V().copy(b.pos).addScaledVector(f, K.lead);
     K.trail = [head, head.clone().addScaledVector(f, -K.L * 1.3)];
@@ -817,7 +823,8 @@ export class Motion {
     const L = K.L, fb = this.flightBlend;
     const inplace = this.mode === 'inplace' || this.mode === 'stand';
     // the head leads the body; the trail records where it has been
-    const head = _c.copy(b.pos).addScaledVector(fwd, K.lead);
+    // (on the course the head stays on the path, so the body crosses the obstacles instead of cutting the loop)
+    const head = this.mode === 'course' ? this.terrain.pathPoint(b.s + K.lead, _c) : _c.copy(b.pos).addScaledVector(fwd, K.lead);
     head.y = 0;
     if (inplace) K.trail = [head.clone(), head.clone().addScaledVector(fwd, -L * 1.3)];
     else {
@@ -850,11 +857,13 @@ export class Motion {
       const lateral = Math.sin(ph) * amp * env * (1 - 0.5 * fb);
       const u = s / Math.max(1e-6, neck);
       const neckUp = u < 1 ? (0.5 + 0.5 * Math.cos(Math.PI * u)) * raise : 0;
-      const groundY = (this.flatGround ? 0 : this.ground(base.x, base.z)) + K.r0 + neckUp;
+      const t = K.targets[i].copy(base).addScaledVector(nrm, lateral);
+      // the ground under where this joint actually lies (after the sideways wave), across the body's width,
+      // so the body rides over rocks and edges instead of cutting into them
+      const groundY = (this.flatGround || fb > 0.999 ? 0 : this.ground(t.x, t.z, K.r0 * 0.8)) + K.r0 + neckUp;
       // in the air: float at the flight height with an up-down wave (Chinese dragon)
       const airY = (this.flatGround ? this.liftY : moverY) + K.r0 + neckUp * 0.5
         + Math.sin(ph + Math.PI / 2) * P.flyAmp * L * THREE.MathUtils.smoothstep(s, 0, 0.3 * L);
-      const t = K.targets[i].copy(base).addScaledVector(nrm, lateral);
       t.y = THREE.MathUtils.lerp(groundY, airY, fb);
       t.add(off);
     });
@@ -874,8 +883,10 @@ export class Motion {
       if (!real(j, j + 1) || (j === ri && rootAimed)) continue;
       aimBone(O[j], worldPos(O[j + 1]), T[j + 1]);
     }
+    // the tail tip: aim the last bone at it, unless that bone is the root already aimed at the body (a chain with
+    // no tail past the root) - turning it again would swing the whole body about the tail end
     const last = O[O.length - 1];
-    aimBone(last, last.localToWorld(K.tipLocal.clone()), T[T.length - 1]);
+    if (!(ri === O.length - 1 && rootAimed)) aimBone(last, last.localToWorld(K.tipLocal.clone()), T[T.length - 1]);
     // head: its reference orientation, turned to face along the path
     const dir = _a.copy(T[0]).sub(T[Math.min(2, T.length - 1)]);
     dir.y = 0;

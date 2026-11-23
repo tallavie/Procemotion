@@ -33,6 +33,8 @@ The rest of this file explains how it works.
 4. **Moves it procedurally** over a test course (rocks, a step, ramps, stairs): footsteps for any number of legs, feet
    placed on the ground they land on, the body following the slope, springy ears/tails/tentacles, slithering, floating,
    flying, and actions (bite, charge, swipe, stomp, tail whip, roar, gust, hit, faint, jump, happy, look around).
+   **Size** (next to Obstacles / Flat) shows the model from 0.25× to 4× next to the course, original size in the
+   middle (double-click to reset); it is for the preview only, the exported size comes from *UE import scale*.
 5. **Bakes** clips (in place, flat ground, seamless loops) and **exports** for Unreal.
 
 ## Classifying bones by hand (Rig view, right panel)
@@ -154,8 +156,11 @@ wing**, and swaps the pairs on take-off and landing. You can also set **Folded w
 
 ## Serpents
 
-Long bodies without legs are posed as one chain that follows the path its head took: on the ground with the neck
-raised, or (Flight → Fly) floating in the air with an up-down wave. **Ears in flight** (Flight panel): *Springy*,
+Long bodies without legs are posed as one chain that follows the path its head took: on the ground, riding over
+rocks, steps and ramps (each joint sits on the ground under it, across the body's width), with the neck raised if
+the reference pose raises it, or (Flight → Fly) floating in the air with an up-down wave. The head is where the body
+forks into snout and jaw: the lower branch becomes the **Jaw**, the rest moves with the head. The test course is
+sized by a serpent's length rather than its height, so the obstacles are big enough to climb. **Ears in flight** (Flight panel): *Springy*,
 *Flap* (beating like wings) or *Spread* (held open with a light flutter). Fins or other parts can be set to **Wing**
 in the Limbs list to flap them too. In UE, serpents use the baked clips (Slither, Fly (serpent)); the generated rig adds
 the springs for ears and hair, but the Locomotor is only used for legged creatures.

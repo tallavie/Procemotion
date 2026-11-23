@@ -336,6 +336,38 @@ export function detectLimbs(creature, opts = {}) {
   if (!head && trunkBones.length >= 7 && Math.max(...trunkBones.map((b) => P.get(b).y - ground)) < 0.6 * H) {
     const front = trunkBones[trunkBones.length - 1];
     for (const l of out) if ((l.type === 'leg' || l.type === 'arm') && boneParent(l.bones[0]) === front) { l.type = 'appendage'; l.effector = l.bones.length - 1; l.ikStart = 0; }
+    // the head lies past the trunk's end: follow the one long branch that carries on (neck, skull) to where it
+    // forks into parts of two bones or more (snout and lower jaw). That fork bone is the head; the branch reaching
+    // lowest is the jaw, the others are the face and move with the head. Short single bones on the way (eyes, a
+    // tongue) stay parts of their own.
+    const depth = (b) => 1 + Math.max(0, ...kids(b).map(depth));
+    const along = [];
+    let tip = front;
+    for (;;) {
+      const k = kids(tip);
+      const d = k.map(depth);
+      const big = k.filter((_, i) => d[i] >= 2);
+      if (big.length >= 2 || !big.length) break;
+      along.push(tip = big[0]);
+    }
+    const forks = kids(tip).filter((c) => depth(c) >= 2);
+    const span = along.reduce((a, b) => a + P.get(b).distanceTo(P.get(boneParent(b))), 0);
+    const trunkLen = trunkBones.reduce((a, b) => { const p = boneParent(b); return p && trunk.has(p) ? a + P.get(b).distanceTo(P.get(p)) : a; }, 0);
+    if (along.length && forks.length >= 2 && span < 0.25 * trunkLen) {
+      const chainOf = (b) => { const c = [b]; for (let k = kids(b); k.length === 1; k = kids(k[0])) c.push(k[0]); return c; };
+      const branches = forks.map(chainOf);
+      const lowY = branches.map((c) => Math.min(...c.map((b) => P.get(b).y)));
+      const ji = lowY.indexOf(Math.min(...lowY));
+      const jawBelow = lowY.every((y, i) => i === ji || y - lowY[ji] > 0.05 * H);
+      const headPart = (b) => along.includes(b) || isUnder(b, tip);
+      for (let i = out.length - 1; i >= 0; i--) if (out[i].bones.some(headPart)) out.splice(i, 1);
+      along.forEach((b) => trunk.add(b));
+      head = tip;
+      if (jawBelow) {
+        const chain = branches[ji];
+        out.push(makeLimb({ chain, parentBone: tip, type: 'jaw', side: 'C', pts: chain.map((b) => P.get(b)), ground, H, auto: true }));
+      }
+    }
   }
   // back wings come in mirrored pairs: one flat plate without a twin on the other side (an armour plate) isn't one
   for (const l of out) {

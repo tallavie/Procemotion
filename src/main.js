@@ -76,7 +76,7 @@ new ResizeObserver(resize).observe(canvas.parentElement);
 // ------------------------------------------------------------------ state
 const S = {
   creature: null, info: null, motion: null, ref: null, bind: null, refKey: 'rest', facing: '+Z',
-  footSets: [], mode: 'anim', ground: 'course', drive: 'course', selected: null, follow: true,
+  footSets: [], mode: 'anim', ground: 'course', modelScale: 1, drive: 'course', selected: null, follow: true,
   added: [], undo: [], clips: [], playing: null, place: null, template: null, suggestions: [], bakeSel: new Set(['walk', 'run', 'idle']),
   weightsOn: false, savedMaterials: null,
 };
@@ -174,6 +174,7 @@ async function openFiles(files) {
     holder.add(model);
     const cr = new Creature(model, animations, name);
     S.creature = cr;
+    setModelScale(0);
     S.clips = [];
     S.added = []; S.undo = [];
     S.selected = null;
@@ -267,8 +268,7 @@ function analyse({ keepLimbs = false, fresh = false } = {}) {
   refreshCapsules();
   // walking creatures need the standing pose as the reference pose in UE (Locomotor); others keep their own
   $('#rebindRef').checked = S.motion.legs.length > 0;
-  terrain.build(S.info.H, S.ground);
-  if (S.mode === 'rig') terrain.group.children.forEach((c) => { c.visible = c.name === 'Floor'; });
+  buildGround();
   S.motion.reset();
   fitCamera();
   if (S.mode === 'rig') enterRigPose();
@@ -1040,7 +1040,7 @@ function fitCameraH(H) {
   camera.near = H * 0.01; camera.far = H * 300; camera.updateProjectionMatrix();
   orbit.target.set(0, H * 0.5, 0);
   camera.position.set(H * 1.9, H * 0.9, H * 2.6);
-  terrain.build(H, S.ground);
+  buildGround();
 }
 function drawTemplate(keepSel) {
   clearGroup(tplGroup);
@@ -1214,9 +1214,32 @@ $('#groundSeg').addEventListener('click', (e) => {
   const b = e.target.closest('button'); if (!b) return;
   S.ground = b.dataset.g;
   $$('#groundSeg button').forEach((x) => x.classList.toggle('on', x === b));
-  terrain.build(S.info ? S.info.H : S._H || 1, S.ground);
+  buildGround();
   if (S.motion) S.motion.reset();
 });
+/**
+ * The test course is sized to the creature: by its height, or for a serpent by its length (a long, low body would
+ * otherwise get obstacles far smaller than its own thickness). Size (viewport) shows the model bigger or smaller
+ * than that by building the course the other way round, so the model, its motion and the export stay as they are.
+ */
+function courseSize() {
+  const I = S.info;
+  const base = I ? (I.style === 'slither' ? Math.max(I.H, 0.25 * (I.reach || I.H)) : I.H) : S._H || 1;
+  return base / S.modelScale;
+}
+function buildGround() { terrain.build(courseSize(), S.ground); if (S.mode === 'rig') terrain.group.children.forEach((c) => { c.visible = c.name === 'Floor'; }); }
+// slider -2 .. 2 = 0.25x .. 4x, original size in the middle
+function setModelScale(v) {
+  $('#modelScale').value = v;
+  S.modelScale = Math.pow(2, +v);
+  $('#modelScaleVal').textContent = S.modelScale.toFixed(2) + '×';
+}
+$('#modelScale').addEventListener('input', (e) => {
+  setModelScale(e.target.value);
+  buildGround();
+  if (S.motion) S.motion.reset();
+});
+$('#modelScale').addEventListener('dblclick', () => { setModelScale(0); buildGround(); if (S.motion) S.motion.reset(); });
 $('#showSkel').addEventListener('change', (e) => skel.visible(e.target.checked));
 $('#showCollision').addEventListener('change', (e) => { capView.group.visible = e.target.checked; });
 $('#follow').addEventListener('change', (e) => { S.follow = e.target.checked; });
