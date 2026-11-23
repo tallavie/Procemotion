@@ -17,7 +17,7 @@ export function defaultParams() {
   return {
     // runStyle: gallop = at running speed the legs of each pair move (almost) together, front pairs and hind pairs
     // half a stride apart, with a moment in the air (bound/gallop of crocodiles, dogs; a seal's two flippers together)
-    // allFours: a creature with two legs and two arms drops onto its hands when it gallops (a bear, Nidoking)
+    // allFours: a creature with two legs and two arms drops onto its hands when it gallops (a bear)
     movement: { speed: 0.35, maxSpeed: 2.4, accel: 3, decel: 3.5, turnRate: 120, phaseMin: 1.1, phaseMax: 2.8, minStep: 0.08, timeScale: 1, runStyle: 'gallop', allFours: true },
     stepping: { air: 0.35, airExt: 0.2, stepHeight: 0.2, easeIn: 0.5, easeOut: 0.2, groundCollision: true, maxCollision: 0.6, footRadius: 0.06, footPitch: 0.8, footRoll: 0.5 },
     // flex / rock (deg) = up-down bending of the back and rocking of the body while galloping;
@@ -107,7 +107,7 @@ export class Motion {
       const jp = joints.map((j) => worldPos(j).clone());
       // legs with 4+ joints are solved as hip-knee-ankle plus a rigid foot (solveLeg), so the knee's bend is
       // measured against the hip-ankle line only: a hind leg's heel points back while its knee points forward
-      // (Rhyhorn), and averaging both flipped the knee
+      // and averaging both flipped the knee
       const upperEnd = jp.length > 3 ? 2 : jp.length - 1;
       const ax = jp[upperEnd].clone().sub(jp[0]).normalize();
       const mid = V();
@@ -124,6 +124,24 @@ export class Motion {
         effQuat: worldQuat(eff).clone(),
         offset: 0, pos: V(), from: V(), to: V(), swing: false, groundY: 0, normal: UP.clone(), s: 0,
       });
+    }
+    // mirrored pairs stand alike: a foot held up in the reference pose (Crystalwing lifts a front paw in its idle)
+    // is a detail of that pose, not where the foot rests - it takes the height and the mirrored spot of its twin
+    // (mirrored about the body's own middle - the pelvis - not the bounding box, which raised wings can shift)
+    const cx = info.pelvis ? worldPos(info.pelvis).x : 0;
+    for (const a of this.legs) {
+      if (a.limb.side === 'C') continue;
+      const ha = worldPos(a.joints[0]).clone();
+      for (const b of this.legs) {
+        if (b === a || b.limb.side === 'C' || b.limb.side === a.limb.side) continue;
+        const hb = worldPos(b.joints[0]).clone();
+        if (Math.abs(ha.x + hb.x - 2 * cx) > 0.15 * H || Math.abs(ha.z - hb.z) > 0.15 * H || Math.abs(ha.y - hb.y) > 0.15 * H) continue;
+        if (a.effHeight > b.effHeight + 0.03 * H) {
+          a.effHeight = b.effHeight;
+          a.restXZ.set(ha.x - (b.restXZ.x - hb.x), 0, ha.z + (b.restXZ.z - hb.z));
+          a.liftedInRef = true;
+        }
+      }
     }
     this.legLen = this.legs.length ? this.legs.reduce((a, l) => a + l.legLen, 0) / this.legs.length : H * 0.4;
     // sprawled legs (an insect's or spider's: the foot far out from the hip, not under it) can't gain reach by the
@@ -172,6 +190,9 @@ export class Motion {
     this.bodyBones = this.snake ? [] : [this.pelvis, ...info.spine, info.head, ...info.limbs.filter((l) => l.type === 'tail').map((l) => l.bones[0])].filter(Boolean);
     // lift from the bone that carries all of them (the "pelvis" may sit above the rump, e.g. a seal's flippers)
     this.liftRoot = commonAncestorBone(this.bodyBones) || this.pelvis;
+    // each body bone's height over the ground in the reference pose (mover at the origin, ground at 0): a capsule
+    // that already reaches into the ground there (a wide pelvis capsule) is not a collision
+    this.bodyRefY = new Map(this.bodyBones.map((b) => [b, worldPos(b).y]));
     if (this.snake && this.params.slither.neck < 0) this.params.slither.neck = +(this.snake.neck / this.snake.L).toFixed(2);
 
     // chain springs
@@ -207,7 +228,7 @@ export class Motion {
   }
 
   /**
-   * Two legs + two arms (a bear, Nidoking): when galloping it drops onto all fours. The upper body pitches forward
+   * Two legs + two arms (a bear): when galloping it drops onto all fours. The upper body pitches forward
    * about the bone that carries it until the hands can reach the ground, and the arms join the gait as front legs.
    * Measured in the reference pose (mover at the origin). Arm "legs" are added to this.legs with armLeg = true.
    */
@@ -672,7 +693,11 @@ export class Motion {
       const cap = caps.get(b);
       if (!cap) continue;
       const p = worldPos(b);
-      const pen = this.ground(p.x, p.z) + cap.radius * k * 0.85 - p.y;
+      // only what goes deeper than the standing pose already does (Crystalwing's pelvis capsule spans its wings'
+      // base and reaches the floor even standing; without this the body was lifted by half its height)
+      const y0 = this.bodyRefY && this.bodyRefY.get(b);
+      const allow = y0 === undefined ? 0 : Math.max(0, cap.radius * k * 0.85 - y0);
+      const pen = this.ground(p.x, p.z) + cap.radius * k * 0.85 - allow - p.y;
       if (pen > need) need = pen;
     }
     // up fast (never sink in), down slowly (slide off an obstacle instead of dropping)

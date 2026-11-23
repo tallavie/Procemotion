@@ -108,7 +108,7 @@ export function limbsFromSelection(creature, info, selected, type, ctx = context
   const limbs = [];
   const build = (piece) => {
     const { chain, details } = mainChain(piece, ctx.M.P, SPLIT.has(type));
-    // springy parts that fork (Moltres's three tails from one root) become one part per branch; a limb's
+    // springy parts that fork (three tails from one root) become one part per branch; a limb's
     // branches (toes, fingers, feathers) stay details
     if (SPLIT.has(type) && details.length) {
       const sub = components(new Set(details), creature.bones);

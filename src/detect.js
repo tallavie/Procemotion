@@ -177,7 +177,7 @@ export function detectLimbs(creature, opts = {}) {
     for (const s of segs) {
       if (segOnTrunk(s) || !s.parentBone || !trunk.has(s.parentBone)) continue;
       const cx = Math.max(...s.bones.map((b) => Math.abs(P.get(b).x)));
-      // a hub (hips) branches to both sides; a shoulder whose leg and a flame on it both go one way is not one (Ponyta)
+      // a hub (hips) branches to both sides; a shoulder whose leg and a flame on it both go one way is not one
       // (sides from the symmetric bind pose, relative to the hub itself: a reference pose can be lopsided)
       const ends = s.childSegs.map((c) => { const xs = []; const f = (x) => { x.bones.forEach((b) => xs.push(sideX(b))); x.childSegs.forEach(f); }; f(c); return xs; });
       const means = ends.map((xs) => xs.reduce((a, x) => a + x, 0) / xs.length);
@@ -211,7 +211,7 @@ export function detectLimbs(creature, opts = {}) {
       const rest = d.filter((_, i) => i !== best);
       let dominant = cur.childSegs.length === 1 || (d[best] >= 2 && d[best] >= 2 * Math.max(...rest));
       // a leg continues into the one branch that reaches the ground, even when something longer grows off the
-      // same joint (a flame or a fin on the leg: Ponyta)
+      // same joint (a flame or a fin on the leg)
       if (!dominant) {
         const low = cur.childSegs.map(lowestOf);
         const g = low.map((y) => y - ground < 0.12 * H);
@@ -277,9 +277,9 @@ export function detectLimbs(creature, opts = {}) {
       if (sy !== null && sy - ground < 0.08 * H) { grounded = true; descends = start.y - sy > 0.1 * H; skinFoot = true; }
     }
 
-    // small wings on the back (Clefairy, fairies, bees): a left/right pair of short parts that start behind the
+    // small wings on the back (fairies, bees): a left/right pair of short parts that start behind the
     // middle of the body and above half its height - ears sit on top of the head, tails at the back in the middle
-    // - and they are flat: a round lump there (Paras's mushrooms) is not a wing
+    // - and they are flat: a round lump there (a mushroom cap) is not a wing
     const backWing = side !== 'C' && L.chain.length <= 3 && start.z < bodyZ - 0.15 * H && start.y - ground > 0.35 * H
       && !RX.ear.test(names) && !RX.tail.test(names) && !RX.jaw.test(names)
       && !(skinFlatness(creature, L.chain[0]) > 0.4);
@@ -301,9 +301,9 @@ export function detectLimbs(creature, opts = {}) {
     else if (RX.tentacle.test(names) && L.chain.length >= 3) type = 'tentacle';
     else if (grounded && descends) type = 'leg';
     // a long part reaching out sideways is a wing if its skin is a flat membrane, not a round tube (an outstretched
-    // arm: Nidoking 0.82, Growlithe 0.81 vs wings 0.17-0.40, thinnest / middle spread in the bind pose). Without
+    // arms about 0.8 vs wings 0.17-0.40, thinnest / middle spread in the bind pose). Without
     // skin to measure, by names: not a hand with short fingers on it - unless finger bones carry much of the
-    // length (a bird's wing is built on its fingers: Moltres Hand > Finger1 > Finger2)
+    // length (a bird's wing is built on its fingers: Hand > Finger1 > Finger2)
     else if (side !== 'C' && L.chain.length >= 2 && len > 0.3 * H && lateral > 0.75 * len && (() => {
       const sh = skinShape(creature, L.chain[0]);
       if (sh) return sh.thinMid < 0.55;
@@ -337,7 +337,7 @@ export function detectLimbs(creature, opts = {}) {
     const front = trunkBones[trunkBones.length - 1];
     for (const l of out) if ((l.type === 'leg' || l.type === 'arm') && boneParent(l.bones[0]) === front) { l.type = 'appendage'; l.effector = l.bones.length - 1; l.ikStart = 0; }
   }
-  // back wings come in mirrored pairs: one flat plate without a twin on the other side (Rhyhorn's armour) isn't one
+  // back wings come in mirrored pairs: one flat plate without a twin on the other side (an armour plate) isn't one
   for (const l of out) {
     const a = l.backWingAt;
     if (!a) continue;
@@ -347,7 +347,7 @@ export function detectLimbs(creature, opts = {}) {
   }
   for (const l of out) delete l.backWingAt;
   // legs come in mirrored pairs: the twin of a leg (same build, mirrored place) is a leg too, even when the
-  // reference pose holds it up off the ground (Moltres hovers with one leg tucked higher)
+  // reference pose holds it up off the ground (a hovering bird with one leg tucked higher)
   for (const l of out) {
     if (!['arm', 'appendage', 'tentacle'].includes(l.type) || l.side === 'C') continue;
     const twin = out.find((o) => o.type === 'leg' && o.side !== 'C' && o.side !== l.side
@@ -472,7 +472,7 @@ export function finishInfo(creature, info) {
 
 /**
  * Some models carry two sets of wings: open ones for flying and folded ones for standing, and their clips hide
- * one set by shrinking its bone (Pidgeot's ground clips scale LArm to 0.02). Wings shrunk that way are "air only";
+ * one set by shrinking its bone (ground clips that scale the open wing to 0.02). Wings shrunk that way are "air only";
  * other limbs that start right next to such a wing, on the same side, are its folded "ground only" counterpart.
  */
 export function detectPartSwap(creature, info) {

@@ -38,7 +38,8 @@
     "waveAxis": "side",
     "twitch": 0,
     "collide": false
-   }
+   },
+   "label": "Right back leg"
   },
   {
    "type": "leg",
@@ -69,150 +70,8 @@
     "waveAxis": "side",
     "twitch": 0,
     "collide": false
-   }
-  },
-  {
-   "type": "arm",
-   "side": "L",
-   "sideManual": true,
-   "bones": [
-    "Bip001_L_Forearm_032",
-    "Bip001_L_Hand_033"
-   ],
-   "details": [
-    "Bip001_L_Finger0_034",
-    "Bip001_L_Finger01_035",
-    "Bip001_L_Finger1_036",
-    "Bip001_L_Finger11_037",
-    "Bip001_L_Finger2_038",
-    "Bip001_L_Finger21_039",
-    "Bone032_040",
-    "Bone033_041",
-    "Bone034_042"
-   ],
-   "dyn": {
-    "on": false,
-    "stiffness": 0.5,
-    "damping": 0.5,
-    "gravity": 0,
-    "waveAmp": 0,
-    "waveFreq": 0.8,
-    "waveShift": 0.6,
-    "waveAxis": "side",
-    "twitch": 0,
-    "collide": false
-   }
-  },
-  {
-   "type": "arm",
-   "side": "R",
-   "sideManual": true,
-   "bones": [
-    "Bip001_R_UpperArm_0107"
-   ],
-   "details": [
-    "Bip001_R_Forearm_0108",
-    "Bip001_R_Hand_0109",
-    "Bip001_R_Finger0_0110",
-    "Bip001_R_Finger01_0111",
-    "Bip001_R_Finger1_0112",
-    "Bip001_R_Finger11_0113",
-    "Bip001_R_Finger2_0114",
-    "Bip001_R_Finger21_0115",
-    "Bone032(mirrored)_0116",
-    "Bone033(mirrored)_0117",
-    "Bone034(mirrored)_0118"
-   ],
-   "dyn": {
-    "on": false,
-    "stiffness": 0.5,
-    "damping": 0.5,
-    "gravity": 0,
-    "waveAmp": 0,
-    "waveFreq": 0.8,
-    "waveShift": 0.6,
-    "waveAxis": "side",
-    "twitch": 0,
-    "collide": false
-   }
-  },
-  {
-   "type": "wing",
-   "side": "L",
-   "sideManual": true,
-   "bones": [
-    "Bone014_0136"
-   ],
-   "details": [
-    "Bone015_0138",
-    "Bone016_0139",
-    "Bone044_0141",
-    "Bone018_0142",
-    "Bone019_0143",
-    "Bone020_0144",
-    "Bone021_0145",
-    "Bone042_0147",
-    "Bone041_0148",
-    "Bone023_0149",
-    "Bone024_0150",
-    "Bone025_01",
-    "Bone026_02",
-    "Bone043_0151",
-    "Bone028_0152",
-    "Bone029_0153",
-    "Bone030_0154",
-    "Bone101_0156"
-   ],
-   "dyn": {
-    "on": true,
-    "stiffness": 0.8,
-    "damping": 0.6,
-    "gravity": 0,
-    "waveAmp": 0,
-    "waveFreq": 0.8,
-    "waveShift": 0.6,
-    "waveAxis": "side",
-    "twitch": 0,
-    "collide": false
-   }
-  },
-  {
-   "type": "wing",
-   "side": "R",
-   "sideManual": true,
-   "bones": [
-    "Bone015(mirrored)_0158"
-   ],
-   "details": [
-    "Bone016(mirrored)_0159",
-    "Bone044(mirrored)_0161",
-    "Bone018(mirrored)_0162",
-    "Bone019(mirrored)_0163",
-    "Bone020(mirrored)_0164",
-    "Bone021(mirrored)_0165",
-    "Bone042(mirrored)_0167",
-    "Bone041(mirrored)_0168",
-    "Bone023(mirrored)_0169",
-    "Bone024(mirrored)_0170",
-    "Bone025(mirrored)_0171",
-    "Bone026(mirrored)_0172",
-    "Bone043(mirrored)_0174",
-    "Bone028(mirrored)_0155",
-    "Bone029(mirrored)_0176",
-    "Bone030(mirrored)_0177"
-   ],
-   "dyn": {
-    "on": true,
-    "stiffness": 0.8,
-    "damping": 0.6,
-    "gravity": 0,
-    "waveAmp": 0,
-    "waveFreq": 0.8,
-    "waveShift": 0.6,
-    "waveAxis": "side",
-    "twitch": 0,
-    "collide": false
-   }
+   },
+   "label": "Left back leg"
   },
   {
    "type": "tail",
@@ -1028,6 +887,156 @@
     "stiffness": 0.35,
     "damping": 0.4,
     "gravity": 0.2,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "leg",
+   "side": "L",
+   "sideManual": true,
+   "label": "Left front leg",
+   "bones": [
+    "Bip001_L_UpperArm_031",
+    "Bip001_L_Forearm_032",
+    "Bip001_L_Hand_033"
+   ],
+   "details": [
+    "Bip001_L_Finger0_034",
+    "Bip001_L_Finger01_035",
+    "Bip001_L_Finger1_036",
+    "Bip001_L_Finger11_037",
+    "Bip001_L_Finger2_038",
+    "Bip001_L_Finger21_039",
+    "Bone032_040",
+    "Bone033_041",
+    "Bone034_042"
+   ],
+   "dyn": {
+    "on": false,
+    "stiffness": 0.5,
+    "damping": 0.5,
+    "gravity": 0,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "leg",
+   "side": "R",
+   "sideManual": true,
+   "label": "Right front leg",
+   "bones": [
+    "Bip001_R_UpperArm_0107",
+    "Bip001_R_Forearm_0108",
+    "Bip001_R_Hand_0109"
+   ],
+   "details": [
+    "Bip001_R_Finger0_0110",
+    "Bip001_R_Finger01_0111",
+    "Bip001_R_Finger1_0112",
+    "Bip001_R_Finger11_0113",
+    "Bip001_R_Finger2_0114",
+    "Bip001_R_Finger21_0115",
+    "Bone032(mirrored)_0116",
+    "Bone033(mirrored)_0117",
+    "Bone034(mirrored)_0118"
+   ],
+   "dyn": {
+    "on": false,
+    "stiffness": 0.5,
+    "damping": 0.5,
+    "gravity": 0,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "wing",
+   "side": "L",
+   "sideManual": true,
+   "label": "Left wing",
+   "bones": [
+    "Bone014_0136"
+   ],
+   "details": [
+    "Bone015_0138",
+    "Bone016_0139",
+    "Bone044_0141",
+    "Bone018_0142",
+    "Bone019_0143",
+    "Bone020_0144",
+    "Bone021_0145",
+    "Bone042_0147",
+    "Bone041_0148",
+    "Bone023_0149",
+    "Bone024_0150",
+    "Bone025_01",
+    "Bone026_02",
+    "Bone043_0151",
+    "Bone028_0152",
+    "Bone029_0153",
+    "Bone030_0154",
+    "Bone101_0156"
+   ],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.8,
+    "damping": 0.6,
+    "gravity": 0,
+    "waveAmp": 0,
+    "waveFreq": 0.8,
+    "waveShift": 0.6,
+    "waveAxis": "side",
+    "twitch": 0,
+    "collide": false
+   }
+  },
+  {
+   "type": "wing",
+   "side": "R",
+   "sideManual": true,
+   "label": "Right wing",
+   "bones": [
+    "Bone014(mirrored)_0157"
+   ],
+   "details": [
+    "Bone015(mirrored)_0158",
+    "Bone016(mirrored)_0159",
+    "Bone044(mirrored)_0161",
+    "Bone018(mirrored)_0162",
+    "Bone019(mirrored)_0163",
+    "Bone020(mirrored)_0164",
+    "Bone021(mirrored)_0165",
+    "Bone042(mirrored)_0167",
+    "Bone041(mirrored)_0168",
+    "Bone023(mirrored)_0169",
+    "Bone024(mirrored)_0170",
+    "Bone025(mirrored)_0171",
+    "Bone026(mirrored)_0172",
+    "Bone043(mirrored)_0174",
+    "Bone028(mirrored)_0155",
+    "Bone029(mirrored)_0176",
+    "Bone030(mirrored)_0177",
+    "Bone101(mirrored)_0179"
+   ],
+   "dyn": {
+    "on": true,
+    "stiffness": 0.8,
+    "damping": 0.6,
+    "gravity": 0,
     "waveAmp": 0,
     "waveFreq": 0.8,
     "waveShift": 0.6,
